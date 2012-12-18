@@ -12,7 +12,24 @@ class Game:
 
 	def startGame(self):
 		self.dealRound()
-		
+		self.getCommand()
+	
+	def getCommand(self):
+		action = raw_input("Action: ")
+		print "Entered:", action
+		self.processAction(action)
+	
+	def processAction(self, action):
+		if action == "h":
+			print "HIT"
+		elif action == "dd":
+			print "DOUBLE DOWN"
+		elif action == "s":
+			print "SPLIT"
+		else:
+			print "Invalid command. Valid commands: h, dd, s"
+			self.getCommand()
+
 	def dealRound(self):
 		#print self.deck
 		#print self.playerhands

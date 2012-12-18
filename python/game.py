@@ -19,5 +19,11 @@ class Game:
 		for p in 2*range(self.numplayers):
 			card = self.deck.drawCard()
 			self.playerhands[str(p % self.numplayers)].append(card)
+		self.printHandState()
 
-		print self.playerhands
+	def printHandState(self):
+		toprint = []
+		for (k, v) in self.playerhands:
+			if k != '0': 
+				toprint.append((k, v))
+		print toprint	

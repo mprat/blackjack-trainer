@@ -23,7 +23,9 @@ class Game:
 
 	def printHandState(self):
 		toprint = []
-		for (k, v) in self.playerhands:
-			if k != '0': 
+		for (k, v) in self.playerhands.items():
+			if k == '0': 
+				toprint.append((k, v[0]))
+			elif k == '1':
 				toprint.append((k, v))
 		print toprint	

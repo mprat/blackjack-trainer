@@ -2,7 +2,7 @@ from random import shuffle
 from deck import *
 
 class Game:
-	def __init__(self, deck, numplayers):
+	def __init__(self, deck, numplayers=1):
 		self.deck = deck
 		self.numplayers = numplayers
 		self.discard = Deck(0)
@@ -13,11 +13,16 @@ class Game:
 	def startGame(self):
 		self.dealRound()
 		self.getCommand()
+		self.dealerPlay()
 		end = self.checkLoser()
 		while (not end):
 			self.getCommand()
 			end = self.checkLoser()
 		self.endGame()
+
+	#TODO: implement dealer play
+	def dealerPlay(self):
+		print "dealer play"
 
 	#TODO: implement end of game
 	def endGame(self):
@@ -37,17 +42,29 @@ class Game:
 	#TODO: implement actions
 	def processAction(self, action):
 		if action == "h":
-			print "HIT"
+			self.playerHit()
 		elif action == "dd":
-			print "DOUBLE DOWN"
+			self.playerDD()
 		elif action == "s":
-			print "SPLIT"
+			self.playerSplit()
 		elif action == "p":
 			print "PASS"
 		else:
 			print "Invalid command. Valid commands: h, dd, s, p"
 			self.getCommand()
 
+	#TODO: implement player hit
+	def playerHit(self):
+		print "HIT"
+
+	#TODO: implement player double down
+	def playerDD(self):
+		print "DOUBLE DOWN"
+
+	#TODO: implement player split
+	def playerSplit(self):
+		print "SPLIT"
+	
 	def dealRound(self):
 		#print self.deck
 		#print self.playerhands

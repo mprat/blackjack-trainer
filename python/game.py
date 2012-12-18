@@ -13,12 +13,28 @@ class Game:
 	def startGame(self):
 		self.dealRound()
 		self.getCommand()
-	
+		end = self.checkLoser()
+		while (not end):
+			self.getCommand()
+			end = self.checkLoser()
+		self.endGame()
+
+	#TODO: implement end of game
+	def endGame(self):
+		print "The game is over"
+
+	#TODO: implement loss-checking state
+	def checkLoser(self):
+		for playernum, hand in self.playerhands.items():
+			print (playernum, hand)
+		return False
+
 	def getCommand(self):
 		action = raw_input("Action: ")
 		print "Entered:", action
-		self.processAction(action)
-	
+		self.processAction(action)	
+
+	#TODO: implement actions
 	def processAction(self, action):
 		if action == "h":
 			print "HIT"
@@ -26,8 +42,10 @@ class Game:
 			print "DOUBLE DOWN"
 		elif action == "s":
 			print "SPLIT"
+		elif action == "p":
+			print "PASS"
 		else:
-			print "Invalid command. Valid commands: h, dd, s"
+			print "Invalid command. Valid commands: h, dd, s, p"
 			self.getCommand()
 
 	def dealRound(self):

@@ -1,9 +1,7 @@
 import deck as deck
+import player as player
 
-class DealerPlayer:
-	def __init__(self, hand):
-		self.hand = hand
-	
+class DealerPlayer(player.Player):
 	#TODO: implement turn
 	def takeTurn(self):
 		handval = deck.getHandVal(self.hand)

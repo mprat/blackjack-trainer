@@ -1,5 +1,6 @@
 from random import shuffle
 from deck import *
+import dealerPlayer as dealerPlayer 
 
 class Game:
 	def __init__(self, deck, numplayers=2):
@@ -9,6 +10,7 @@ class Game:
 		self.playerhands = {}	
 		for p in range(numplayers): #0 is the dealer hand
 			self.playerhands[str(p)] = []
+		
 
 	def startGame(self):
 		self.dealRound()

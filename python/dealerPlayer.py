@@ -12,4 +12,7 @@ class DealerPlayer(player.Player):
 			return ['p', "dealer pass"]
 
 	def printHand(self):
-		return str([self.hand[0]])
+		return [self.hand[0]]
+
+	def getUpCard(self):
+		return self.hand[0]

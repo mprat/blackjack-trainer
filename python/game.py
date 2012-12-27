@@ -108,6 +108,10 @@ class Game:
 			player.addCardToHand(card)
 			card2 = self.deck.drawCard()
 			player.addCardToHand(card2)
+		dealerup = self.players[0].getUpCard()
+		for playernum, player in self.players.iteritems():
+			if not playernum == 0:
+				player.setDealerUpCard(dealerup)
 
 	def printHandState(self):
 		for playernum, player in self.players.iteritems():

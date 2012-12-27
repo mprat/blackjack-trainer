@@ -30,5 +30,9 @@ class Deck:
 		card = decklist.pop()
 		self.cards[card] = self.cards[card] - 1
 		return card
+
+	def getCardVal(self, card):
+		values = {"A": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 10, "Q": 10, "K": 10}
+		return values[card]
 	
 	

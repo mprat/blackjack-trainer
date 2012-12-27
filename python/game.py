@@ -8,13 +8,13 @@ class Game:
 		self.deck = deck
 		self.numplayers = numplayers
 		self.discard = Deck(0)
-		self.playerhands = {}	
-		for p in range(numplayers): #0 is the dealer hand
-			self.playerhands[str(p)] = []
+		#self.playerhands = {}	
+		#for p in range(numplayers): #0 is the dealer hand
+		#	self.playerhands[str(p)] = []
 		self.players = {}
 		self.players[0] = dealerPlayer.DealerPlayer()
 		for p in range(numplayers - 1):
-			self.players[str(p + 1)] = humanPlayer.humanPlayer()
+			self.players[int(str(p + 1))] = humanPlayer.HumanPlayer()
 
 	def startGame(self):
 		self.dealRound()
@@ -33,15 +33,15 @@ class Game:
 	#TODO: implement dealer play
 	def dealerPlay(self):
 		print "dealer play"
+		self.players[0].takeTurn()
 
 	#TODO: implement end of game
 	def endGame(self, losernum):
 		print "The game is over. Player " + str(losernum) + " is the loser."
 
-	#TODO: implement loss-checking state
 	def checkLoser(self):
-		for playernum, hand in self.playerhands.items():
-			handval, ace = self.deck.getHandVal(hand)
+		for playernum, player in self.players.iteritems():
+			handval, ace = player.getHandVal()
 			if handval > 21:
 				return [True, playernum]
 		return [False, 0]
@@ -66,8 +66,9 @@ class Game:
 
 	def playerHit(self, playernum):
 		print "HIT"
+		player = self.players[playernum]
 		card = self.deck.drawCard()
-		self.playerhands[str(playernum)].append(card)
+		player.addCardToHand(card)
 
 	#TODO: implement player double down
 	def playerDD(self, playernum):
@@ -78,17 +79,12 @@ class Game:
 		print "SPLIT"
 	
 	def dealRound(self):
-		#print self.deck
-		#print self.playerhands
-		for p in 2*range(self.numplayers):
+		for playernum, player in self.players.iteritems():
 			card = self.deck.drawCard()
-			self.playerhands[str(p % self.numplayers)].append(card)
+			player.addCardToHand(card)
+			card2 = self.deck.drawCard()
+			player.addCardToHand(card2)
 
 	def printHandState(self):
-		toprint = []
-		for (k, v) in self.playerhands.items():
-			if k == '0': 
-				toprint.append((k, v[0]))
-			elif k == '1':
-				toprint.append((k, v))
-		print toprint	
+		for playernum, player in self.players.iteritems():
+			print "Player",playernum,":", player.printHand()

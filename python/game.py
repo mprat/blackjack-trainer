@@ -19,21 +19,20 @@ class Game:
 	def startGame(self):
 		self.dealRound()
 		self.printHandState()
-		self.getCommand(1)
-		self.printHandState()
-		self.dealerPlay()
-		self.printHandState()
-		end, losernum = self.checkLoser()
+		end = False
 		while (not end):
 			self.getCommand(1)
 			self.printHandState()
+			self.dealerPlay()
+			self.printHandState()
 			end, losernum = self.checkLoser()
 		self.endGame(losernum)
+		#self.startGame() #TODO: implement end of game
 
 	#TODO: implement dealer play
 	def dealerPlay(self):
 		print "dealer play"
-		self.players[0].takeTurn()
+		self.players[0].takeTurn(self.deck)
 
 	#TODO: implement end of game
 	def endGame(self, losernum):

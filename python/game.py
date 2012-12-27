@@ -8,42 +8,64 @@ class Game:
 		self.deck = deck
 		self.numplayers = numplayers
 		self.discard = Deck(0)
-		#self.playerhands = {}	
-		#for p in range(numplayers): #0 is the dealer hand
-		#	self.playerhands[str(p)] = []
 		self.players = {}
 		self.players[0] = dealerPlayer.DealerPlayer()
 		for p in range(numplayers - 1):
 			self.players[int(str(p + 1))] = humanPlayer.HumanPlayer()
+		self.lastcommand = "f" #f for first
+		self.validcommands = ["h", "dd", "s", "p"]
+		self.commandhistory = []
 
 	def startGame(self):
 		self.dealRound()
 		self.printHandState()
 		end = False
-		while (not end):
+		losernum = 0
+		while ((not end) and (not self.dealerAndAllPlayersPass())):
+			self.commandhistory = []
 			self.getCommand(1)
 			self.printHandState()
 			self.dealerPlay()
 			self.printHandState()
 			end, losernum = self.checkLoser()
-		self.endGame(losernum)
-		#self.startGame() #TODO: implement end of game
+		if end:
+			self.endGame(losernum)
+		else:
+			self.endGame(losernum, "winner")
 
-	#TODO: implement dealer play
+	def dealerAndAllPlayersPass(self):
+		if len(self.commandhistory) < 1:
+			return False
+		else:
+			for command in self.commandhistory:
+				if not command == "p":
+					return False
+			return True
+
 	def dealerPlay(self):
-		print "dealer play"
-		self.players[0].takeTurn(self.deck)
+		action, message = self.players[0].takeTurn()
+		#print message
+		self.processAction(action, 0)
 
 	#TODO: implement end of game
-	def endGame(self, losernum):
-		print "The game is over. Player " + str(losernum) + " is the loser."
+	def endGame(self, playernum, msg = "loser"):
+		print "The game is over. Player " + str(playernum) + " is the " + msg + "."
+		print "Dealer score: ", self.players[0].getHandVal()
+		print "Player 1 score: ", self.players[1].getHandVal()
+		#TODO: clear the field, add cards to discard	
+		#self.startGame
 
 	def checkLoser(self):
+		highestHandVal = 0
+		winningplayer = 0
 		for playernum, player in self.players.iteritems():
 			handval, ace = player.getHandVal()
+			if handval > highestHandVal:
+				highestHandVal = handval
+				winningplayer = playernum
 			if handval > 21:
 				return [True, playernum]
-		return [False, 0]
+		return [False, winningplayer]
 
 	def getCommand(self, playernum):
 		action = raw_input("Action: ")
@@ -51,14 +73,21 @@ class Game:
 		self.processAction(action, playernum)	
 
 	def processAction(self, action, playernum):
-		if action == "h":
-			self.playerHit(playernum)
-		elif action == "dd":
-			self.playerDD(playernum)
-		elif action == "s":
-			self.playerSplit(playernum)
-		elif action == "p":
-			print "PASS"
+		if action in self.validcommands:
+			if action == "h":
+				self.playerHit(playernum)
+			elif action == "dd":
+				self.playerDD(playernum)
+			elif action == "s":
+				self.playerSplit(playernum)
+			elif action == "p":
+				print "PASS"
+				#HACK. only works with two players
+				#if self.lastcommand == "p":
+				#	end, winner = self.checkLoser()
+				#	self.endGame(winner, "winner")
+			self.lastcommand = action
+			self.commandhistory.append(action)
 		else:
 			print "Invalid command. Valid commands: h, dd, s, p"
 			self.getCommand(playernum)

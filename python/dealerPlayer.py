@@ -3,15 +3,13 @@ import player as player
 
 class DealerPlayer(player.Player):
 	#dealer hits until 17 (some casinos have dealer hit on soft 17, most don't)
-	def takeTurn(self, deck):
+	def takeTurn(self):
 		handval, ace = self.getHandVal()
 		print "dealer taking a turn"
 		if handval < 17:
-			card = deck.drawCard()
-			self.addCardToHand(card)
-			print "dealer hit"
+			return ['h', "dealer hit"]
 		else:
-			print "dealer stay"
+			return ['p', "dealer pass"]
 
 	def printHand(self):
 		return str([self.hand[0]])

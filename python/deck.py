@@ -1,38 +1,29 @@
-from random import shuffle
+import random
+import game
 
-#def getHandVal(cardlist):
-#		values = {"A": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 10, "Q": 10, "K": 10}
-#		handval = 0
-#		ace = False
-#		for card in cardlist:
-#			handval = handval + values[card]
-#			if card == "A":
-#				ace = True
-#		return [handval, ace]
+
+class DeckEmptyException(Exception):
+    pass
+
 
 class Deck:
-	def __init__(self, numdecks):
-		self.cards = {"2": 4 * numdecks, "3": 4 * numdecks, "4": 4 * numdecks, "5": 4 * numdecks, "6": 4 * numdecks, "7": 4 * numdecks, "8":4 * numdecks, "9": 4 * numdecks, "10": 4 * numdecks, "J": 4 * numdecks, "Q":4 * numdecks, "K":4 * numdecks, "A": 4 * numdecks}
+    def __init__(self, numdecks):
+        self.cards = [c for i in range(numdecks) for c in game.CARDS]
+        self._card_index = 0
+        self.shuffle()
 
-	def getDeckAsDict(self):
-		return self.cards
+    def drawCard(self):
+        if self._card_index < len(self.cards):
+            self._card_index += 1
+            return self.cards[self._card_index - 1]
+        else:
+            print "Shuffling deck"
+            self.shuffle()
+            return self.drawCard()
 
-	def getDeckAsList(self):
-		cardslist = []
-		for (k, v) in self.cards.items():
-			for card in range(v):
-				cardslist.append(k)
-		return cardslist
+    def drawCards(self, num):
+        for i in range(num):
+            yield self.drawCard()
 
-	def drawCard(self):
-		decklist = self.getDeckAsList()
-		shuffle(decklist)
-		card = decklist.pop()
-		self.cards[card] = self.cards[card] - 1
-		return card
-
-	def getCardVal(self, card):
-		values = {"A": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 10, "Q": 10, "K": 10}
-		return values[card]
-	
-	
+    def shuffle(self):
+        random.shuffle(self.cards)

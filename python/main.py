@@ -1,13 +1,5 @@
-from deck import *
-import sys
-from game import *
+import game
 
 if __name__ == '__main__':
-#	if (len(sys.argv) != 2):
-#		sys.exit(0)
-#	else:
-#		deck = Deck(int(sys.argv[1]))
-	deck = Deck(1)
-	game = Game(deck)
-	game.startGame()
-		
+    g = game.Game(numplayers=2, numdecks=1)
+    g.startGame()

@@ -1,18 +1,21 @@
-import deck as deck
-import player as player
+import player
+import actions
+import game
+
 
 class DealerPlayer(player.Player):
-	#dealer hits until 17 (some casinos have dealer hit on soft 17, most don't)
-	def takeTurn(self):
-		handval, ace = self.getHandVal()
-		print "dealer taking a turn"
-		if handval < 17:
-			return ['h', "dealer hit"]
-		else:
-			return ['p', "dealer pass"]
+    def getAction(self, hand):
+        handval = hand.value
+        if handval < 17:
+            return actions.Hit
+        elif handval == 17 and hand.is_soft and game.HIT_ON_SOFT_17:
+            return actions.Hit
+        else:
+            return actions.Pass
 
-	def printHand(self):
-		return [self.hand[0]]
+    def handStr(self):
+        return self.getUpCard()
 
-	def getUpCard(self):
-		return self.hand[0]
+    def getUpCard(self):
+        assert len(self.hands) == 1, "Dealer should only have one hand"
+        return self.hands[0].cards[0]

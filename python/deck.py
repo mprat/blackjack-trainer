@@ -1,5 +1,6 @@
 import random
 import game
+random.seed(1)
 
 
 class DeckEmptyException(Exception):
@@ -7,8 +8,8 @@ class DeckEmptyException(Exception):
 
 
 class Deck:
-    def __init__(self, numdecks):
-        self.cards = [c for i in range(numdecks) for c in game.CARDS]
+    def __init__(self, numdecks=1):
+        self.cards = [c for i in range(4 * numdecks) for c in game.CARDS]
         self._card_index = 0
         self.shuffle()
 
@@ -19,6 +20,7 @@ class Deck:
         else:
             print "Shuffling deck"
             self.shuffle()
+            self._card_index = 0
             return self.drawCard()
 
     def drawCards(self, num):

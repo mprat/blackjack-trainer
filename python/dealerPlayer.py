@@ -17,5 +17,9 @@ class DealerPlayer(player.Player):
         return self.getUpCard()
 
     def getUpCard(self):
-        assert len(self.hands) == 1, "Dealer should only have one hand"
-        return self.hands[0].cards[0]
+        return self.hand.cards[0]
+
+    @property
+    def hand(self):
+        assert len(self.hands) == 1
+        return self.hands[0]

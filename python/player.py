@@ -22,13 +22,15 @@ class Player(object):
         self.hands = [hand.Hand([cards.pop(), cards.pop()]) for i in range(self.num_hands)]
 
     def takeTurn(self):
+        result = []
         for hand in self.hands:
-            if hand.is_bust:
+            if hand.is_bust or hand.double_down:
                 action = actions.Pass
             else:
                 action = self.getAction(hand)
                 hand.history.append(action)
-                yield hand, action
+                result.append((hand, action))
+        return result
 
     def getAction(self):
         """
@@ -53,6 +55,7 @@ class Player(object):
         hand.double_down = True
 
     def split(self, hand, cards):
+        cards = list(cards)
         self.hands.append(hand.split())
         hand.cards.append(cards[0])
         self.hands[-1].cards.append(cards[1])

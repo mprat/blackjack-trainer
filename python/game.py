@@ -20,20 +20,29 @@ class Game:
         self.humans = [humanPlayer.HumanPlayer(p + 1) for p in range(numplayers - 1)]
         self.players = [self.dealer] + self.humans
 
-    def startGame(self):
+    def playGame(self):
+        while True:
+            print "===== New Round ====="
+            self.startRound()
+            self.playRound()
+            self.endRound()
+
+    def startRound(self):
         self.dealRound()
         self.printHandState()
+
+    def playRound(self):
         while not self.allPlayersPass():
             for player in self.humans:
                 self.takeTurn(player)
             if all(h.is_bust for p in self.humans for h in p.hands):
-                self.endGame()
+                return
         print "Humans finished"
         while not self.dealer.last_actions[0] == actions.Pass:
             self.takeTurn(self.dealer)
             if self.dealer.hands[0].is_bust:
                 break
-        self.endGame()
+        return
 
     def takeTurn(self, player):
         for hand, action in player.takeTurn():
@@ -53,11 +62,22 @@ class Game:
     def allPlayersPass(self):
         return all(action == actions.Pass for p in self.humans for action in p.last_actions)
 
-    def endGame(self):
-        for player in self.players:
+    def endRound(self):
+        print "Dealer hand:", self.dealer.hand, "value:", self.dealer.hand.value
+        for player in self.humans:
             print "Player", player.player_num
             for hand in player.hands:
-                print "Hand", hand, "score:", hand.value
+                print "Hand", hand, "value:", hand.value
+                if hand.is_blackjack:
+                    print "Win (blackjack). Bet:", hand.bet
+                elif hand.is_bust:
+                    print "Lose. Bet:", hand.bet
+                elif (hand.value > self.dealer.hand.value) or self.dealer.hand.is_bust:
+                    print "Win. Bet:", hand.bet
+                elif hand.value == self.dealer.hand.value:
+                    print "Push. Bet:", hand.bet
+                else:
+                    print "Lose. Bet:", hand.bet
 
     def dealRound(self):
         for player in self.players:

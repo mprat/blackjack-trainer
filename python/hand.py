@@ -37,7 +37,7 @@ class Hand():
 
         new_hand = Hand([self.cards[1]], self.bet)
         new_hand.history.append(actions.Split)
-        self.cards = self.cards[0]
+        self.cards = [self.cards[0]]
         return new_hand
 
     def __str__(self):
@@ -52,7 +52,7 @@ class Hand():
 
     @property
     def is_blackjack(self):
-        return 'A' in self.cards and self.value == 21 and self.history == [Start]
+        return 'A' in self.cards and self.value == 21 and len(self.cards) == 2 and actions.Split not in self.history
 
     @property
     def is_bust(self):

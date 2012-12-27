@@ -60,6 +60,8 @@ class Game:
 		winningplayer = 0
 		for playernum, player in self.players.iteritems():
 			handval, ace = player.getHandVal()
+			if handval + (ace == True) * 10 <= 21:
+				handval = handval + (ace == True) * 10
 			if handval > highestHandVal:
 				highestHandVal = handval
 				winningplayer = playernum

@@ -23,15 +23,19 @@ class Game:
 		losernum = 0
 		while ((not end) and (not self.dealerAndAllPlayersPass())):
 			self.commandhistory = []
-			self.getCommand(1)
+			self.takeTurn(1)
 			self.printHandState()
-			self.dealerPlay()
+			self.takeTurn(0)
 			self.printHandState()
 			end, losernum = self.checkLoser()
 		if end:
 			self.endGame(losernum)
 		else:
 			self.endGame(losernum, "winner")
+
+	def takeTurn(self, playernum):
+		[action, message] = self.players[playernum].takeTurn()
+		self.processAction(action, playernum)
 
 	def dealerAndAllPlayersPass(self):
 		if len(self.commandhistory) < 1:
@@ -41,11 +45,6 @@ class Game:
 				if not command == "p":
 					return False
 			return True
-
-	def dealerPlay(self):
-		action, message = self.players[0].takeTurn()
-		#print message
-		self.processAction(action, 0)
 
 	#TODO: implement end of game
 	def endGame(self, playernum, msg = "loser"):
@@ -68,11 +67,6 @@ class Game:
 			if handval > 21:
 				return [True, playernum]
 		return [False, winningplayer]
-
-	def getCommand(self, playernum):
-		action = raw_input("Action: ")
-		print "Entered:", action
-		self.processAction(action, playernum)	
 
 	def processAction(self, action, playernum):
 		if action in self.validcommands:

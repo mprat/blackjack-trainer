@@ -1,14 +1,14 @@
 from random import shuffle
 
-def getHandVal(cardlist):
-		values = {"A": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 10, "Q": 10, "K": 10}
-		handval = 0
-		ace = False
-		for card in cardlist:
-			handval = handval + values[card]
-			if card == "A":
-				ace = True
-		return [handval, ace]
+#def getHandVal(cardlist):
+#		values = {"A": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 10, "Q": 10, "K": 10}
+#		handval = 0
+#		ace = False
+#		for card in cardlist:
+#			handval = handval + values[card]
+#			if card == "A":
+#				ace = True
+#		return [handval, ace]
 
 class Deck:
 	def __init__(self, numdecks):

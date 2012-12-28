@@ -14,7 +14,7 @@ class DealerPlayer(player.Player):
             return actions.Pass
 
     def handStr(self):
-        return self.getUpCard()
+        return [self.getUpCard()]
 
     def getUpCard(self):
         return self.hand.cards[0]

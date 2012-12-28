@@ -16,7 +16,7 @@ class SplitError(PlayerError):
 
 
 class Hand():
-    def __init__(self, cards, bet=0):
+    def __init__(self, cards, bet=1):
         self.cards = cards
         self.bet = bet
         self.double_down = False
@@ -42,6 +42,10 @@ class Hand():
 
     def __str__(self):
         return str(self.cards)
+
+    @property
+    def last_action(self):
+        return self.history[-1]
 
     @property
     def value(self):

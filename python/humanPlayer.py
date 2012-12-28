@@ -4,7 +4,7 @@ import actions
 
 class HumanPlayer(player.Player):
     def getAction(self, hand):
-        print "Current hand:", hand
+        print "Current hand:", hand, "bet:", hand.bet
         while True:
             action = raw_input("Action: ")
             if self.checkAction(action):
